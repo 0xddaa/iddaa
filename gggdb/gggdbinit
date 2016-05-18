@@ -1,0 +1,5 @@
+source ~/code/gggdb/gggdb.py
+
+def get_ida_symbols
+    python get_ida_symbols()
+end
