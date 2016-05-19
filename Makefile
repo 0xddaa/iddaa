@@ -1,4 +1,4 @@
 .PHONY : all clean
 
 clean:
-	rm *.pyc
+	rm -f *.pyc

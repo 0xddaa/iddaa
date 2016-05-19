@@ -3,3 +3,7 @@ source ~/code/gggdb/gggdb.py
 def get_ida_symbols
     python get_ida_symbols()
 end
+
+def get_pseudo_code
+    python get_pseudo_code('$arg0')
+end

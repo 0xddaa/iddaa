@@ -37,6 +37,10 @@ class GDBSync:
             cmd = csock.recv(1024).strip()
             if cmd == 'GETSYM':
                 csock.send(iddaapro.SymbolCollector().get_symfile())
-            elif cmd == 'GETPSEUDO':
-                pass
+            elif 'GETPSEUDOCODE' in cmd:
+                if len(cmd.split(' ')) < 2:
+                    csock.send('Miss function name.')
+                    continue
+                func = cmd.split(' ')[1]
+                csock.send(iddaapro.PseudoCodeCollector.get_pseudo_code(func))
             csock.close()

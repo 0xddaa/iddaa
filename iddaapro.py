@@ -119,5 +119,12 @@ class SymbolCollector:
         except:
             print traceback.format_exc()
 
-class PseudocodeCollector:
+class PseudoCodeCollector:
     """Collect pseudo code from ida pro"""
+
+    @staticmethod
+    def get_pseudo_code(func):
+        for ea in Functions():
+            if GetFunctionName(ea) == func:
+                return str(decompile(ea))
+        return 'Function not found.'
