@@ -1,3 +1,4 @@
+import traceback
 from idaapi import *
 from idautils import *
 from idc import *
@@ -5,7 +6,7 @@ from elftools import *
 import iddaautils as utils
 
 class SymbolCollector:
-    """Collector symbol file from ida pro"""
+    """Collect symbols from ida pro"""
 
     def __get_ida_symbols(self):
         symbols = []
@@ -117,3 +118,6 @@ class SymbolCollector:
 
         except:
             print traceback.format_exc()
+
+class PseudocodeCollector:
+    """Collect pseudo code from ida pro"""

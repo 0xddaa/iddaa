@@ -5,7 +5,7 @@ from idaapi import *
 from idautils import *
 from idc import *
 
-import iddaasym
+import iddaapro
 
 def get_seg_range(seg):
     for s in Segments():
@@ -36,5 +36,7 @@ class GDBSync:
             (csock, adr) = sock.accept()
             cmd = csock.recv(1024).strip()
             if cmd == 'GETSYM':
-                csock.send(iddaasym.SymbolCollector().get_symfile())
+                csock.send(iddaapro.SymbolCollector().get_symfile())
+            elif cmd == 'GETPSEUDO':
+                pass
             csock.close()
