@@ -8,7 +8,7 @@ import iddaautils as utils
 class SymbolCollector:
     """Collect symbols from ida pro"""
 
-    def __get_ida_symbols(self):
+    def __get_ida_symbols(self, rename_only=False):
         symbols = []
 
         # func symbols
@@ -16,7 +16,7 @@ class SymbolCollector:
         for ea in Functions():
             name = GetFunctionName(ea)
             if ea >= start_ea and ea < end_ea:
-                if 'sub_' in name: # skip default
+                if rename_only:
                     continue
                 func = get_func(ea)
                 symbols.append(Symbol(name, SymTypes.STB_GLOBAL_FUNC, int(func.startEA), int(func.size()), SegName(ea)))
