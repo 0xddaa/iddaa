@@ -1,5 +1,5 @@
 import idaapi
-import idautils as utils
+import iddaautils as utils
 import idc
 import re
 
@@ -27,7 +27,7 @@ class CGCHelper:
                     # fix comment and function name
                     idc.MakeComm(ip, 'CGC syscall: {}'.format(syscall_table[eax]))
                     if rename:
-                        idc.MakeName(idc.GetFunctionAttr(ip, FUNCATTR_START), syscall_table[eax])
+                        idc.MakeName(idc.GetFunctionAttr(ip, idc.FUNCATTR_START), syscall_table[eax])
             elif 'mov' in idc.GetMnem(ip) and 'eax' == idc.GetOpnd(ip, 0) and 5 == idc.GetOpType(ip, 1):
                 value = idc.GetOpnd(ip, 1)
                 if re.search('^[0-9]+$', value) != None:
