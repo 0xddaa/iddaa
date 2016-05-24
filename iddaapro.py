@@ -4,6 +4,7 @@ from idautils import *
 from idc import *
 from elftools import *
 import iddaautils as utils
+from hashlib import md5
 
 class SymbolCollector:
     """Collect symbols from ida pro"""
@@ -128,3 +129,21 @@ class PseudoCodeCollector:
             if GetFunctionName(ea) == func:
                 return str(decompile(ea))
         return 'Function not found.'
+
+    @staticmethod
+    def get_local_type():
+        local_type = dict()
+        local_type['header'] = utils.PrintLocalTypes(','.join([str(i) for i in range(1, GetMaxLocalType())]), \
+            utils.PDF_INCL_DEPS | utils.PDF_DEF_FWD | utils.PDF_DEF_BASE | utils.PDF_HEADER_CMT)
+
+        decls = ''
+        for i in xrange(1, GetMaxLocalType()):
+            type_name = GetLocalTypeName(i)
+            if not type_name:
+                continue
+            decls += '{} v{};\n'.format(type_name, md5(type_name).hexdigest())
+        template = '#include "localtype.h"\n'
+        template += '{decls}\n'
+        template += 'int main() {{}}\n'
+        local_type['source'] = template.format(decls=decls)
+        return local_type
