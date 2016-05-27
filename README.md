@@ -31,3 +31,8 @@ idapython scripts, including feature as below:
 - Automatic function naming
     - All CGC binary is static linked, stripped, and never use glibc.  
     Rename the function if identified the possible pattern.
+
+### Why not XMLPRC?
+There are obvious delay if using xmlrpc to execute idapython.  
+Some functions, such as `idaapi.decompile`, will let IDA pro be stucked with no reason.  
+If you know the solution, please tell me. Orz  
