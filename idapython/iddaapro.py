@@ -2,8 +2,8 @@ import traceback
 from idaapi import *
 from idautils import *
 from idc import *
-from elftools import *
-import iddaautils as utils
+from iddaa.elftools import *
+import iddaa.iddaautils as utils
 from hashlib import md5
 
 class SymbolCollector:

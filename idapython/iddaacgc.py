@@ -1,5 +1,5 @@
 import idaapi
-import iddaautils as utils
+import iddaa.iddaautils as utils
 import idc
 import re
 
