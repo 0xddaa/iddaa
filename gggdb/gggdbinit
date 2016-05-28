@@ -7,3 +7,9 @@ end
 def get_pseudo_code
     python get_pseudo_code('$arg0')
 end
+
+def get_local_type
+    python get_local_type()
+end
+
+get_ida_symbols
