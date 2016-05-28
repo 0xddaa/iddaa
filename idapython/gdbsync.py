@@ -3,7 +3,7 @@ from idaapi import *
 from idautils import *
 from idc import *
 from iddaa.elftools import *
-import iddaa.iddaautils as utils
+import iddaa.utils as utils
 from hashlib import md5
 
 class SymbolCollector:
@@ -147,3 +147,6 @@ class PseudoCodeCollector:
         template += 'int main() {{}}\n'
         local_type['source'] = template.format(decls=decls)
         return local_type
+
+def PLUGIN_ENTRY():
+    return True
