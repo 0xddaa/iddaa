@@ -28,7 +28,7 @@ class CGCHelper(idaapi.plugin_t):
         hotkey_ctx = idaapi.add_hotkey('Shift-R', CGCHelper.revise_syscall)
         if hotkey_ctx:
             print(self.help)
-            return idaapi.PLUGIN_OK
+            return idaapi.PLUGIN_KEEP
         else:
             print('Failed to register hotkey!')
             del hotkey_ctx
