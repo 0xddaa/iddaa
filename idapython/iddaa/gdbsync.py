@@ -2,51 +2,45 @@ import traceback
 from idaapi import *
 from idautils import *
 from idc import *
-from iddaa.elftools import *
-import iddaa.utils as utils
+from elftools import *
+import utils
 from hashlib import md5
 
 class SymbolCollector:
     """Collect symbols from ida pro"""
 
-    def __get_ida_symbols(self, rename_only=False):
-        symbols = []
-
-        # func symbols
-        start_ea, end_ea = utils.get_seg_range('.text')
-        for ea in Functions():
-            name = GetFunctionName(ea)
-            if ea >= start_ea and ea < end_ea:
-                if rename_only:
-                    continue
-                func = get_func(ea)
-                symbols.append(Symbol(name, SymTypes.STB_GLOBAL_FUNC, int(func.startEA), int(func.size()), SegName(ea)))
-
-        # data symbols
-        start_ea, end_ea = utils.get_seg_range('.rodata')
-        ea = start_ea
-        while ea < end_ea:
-            name = get_ea_name(ea)
-            if name != '':
-                symbols.append(Symbol(name, SymTypes.STB_GLOBAL_OBJ, ea, 10, SegName(ea)))
-            ea = NextHead(ea)
-
-        start_ea, end_ea = utils.get_seg_range('.bss')
-        ea = start_ea
-        while ea < end_ea:
-            name = get_ea_name(ea)
-            if name != '':
-                symbols.append(Symbol(name, SymTypes.STB_GLOBAL_OBJ, ea, 10, SegName(ea)))
-            ea = NextHead(ea)
-
-        return symbols
-
-    def get_symfile(self):
+    @staticmethod
+    def get_symfile():
         try:
             with open(get_root_filename(), 'rb') as f:
                 elf = ELF(f.read())
 
-            symbols = self.__get_ida_symbols()
+            symbols = []
+            # func symbols
+            start_ea, end_ea = utils.get_seg_range('.text')
+            for ea in Functions():
+                name = GetFunctionName(ea)
+                if ea >= start_ea and ea < end_ea:
+                    func = get_func(ea)
+                    symbols.append(Symbol(name, SymTypes.STB_GLOBAL_FUNC, int(func.startEA), int(func.size()), SegName(ea)))
+
+            # data symbols
+            start_ea, end_ea = utils.get_seg_range('.rodata')
+            ea = start_ea
+            while ea < end_ea:
+                name = get_ea_name(ea)
+                if name != '':
+                    symbols.append(Symbol(name, SymTypes.STB_GLOBAL_OBJ, ea, 10, SegName(ea)))
+                ea = NextHead(ea)
+
+            start_ea, end_ea = utils.get_seg_range('.bss')
+            ea = start_ea
+            while ea < end_ea:
+                name = get_ea_name(ea)
+                if name != '':
+                    symbols.append(Symbol(name, SymTypes.STB_GLOBAL_OBJ, ea, 10, SegName(ea)))
+                ea = NextHead(ea)
+
             elf.strip_symbols()
 
             # raw strtab
@@ -147,6 +141,3 @@ class PseudoCodeCollector:
         template += 'int main() {{}}\n'
         local_type['source'] = template.format(decls=decls)
         return local_type
-
-def PLUGIN_ENTRY():
-    return True
