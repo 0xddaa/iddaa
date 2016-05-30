@@ -1,6 +1,9 @@
 import idaapi
 import idautils
 import idc
+import sys
+import StringIO
+import contextlib
 
 def get_seg_range(seg):
     for s in idautils.Segments():
@@ -40,3 +43,11 @@ def PrintLocalTypes(ordinals, flags): # from lastest idapython
     idaapi.print_decls(sink, idaapi.cvar.idati, py_ordinals, flags)
 
     return sink.text
+
+@contextlib.contextmanager
+def stdoutIO(stdout=None):
+    oldout = sys.stdout
+    out = StringIO.StringIO()
+    sys.stdout = out
+    yield out
+    sys.stdout = oldout
