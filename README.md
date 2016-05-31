@@ -43,8 +43,12 @@ You can use this command in **gdb**:
     Get the pseudo code of specified function.
 - `get_local_type`  
     Get all local types defined in IDA pro
+- `idapython [files]`  
+    Execute file in ida pro and get result.  
+- `idc|idaapi|idautils [code]`  
+    The RPC wrapper of idapython. Show the cheatsheet with `idapython cheatsheet`.
 
 ### CGC Helper
 - Revise syscall
     - Press `Shift + R` to revise the syscall comment
-    - Execute `CGCHelper.revise_syscall(True)` if you want to change the function name together
+    - Execute `CGCHelper.revise_syscall(True)` in console if you want to change the function name together
