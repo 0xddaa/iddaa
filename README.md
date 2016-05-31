@@ -48,6 +48,20 @@ You can use this command in **gdb**:
 - `idc|idaapi|idautils [code]`  
     The RPC wrapper of idapython. Show the cheatsheet with `idapython cheatsheet`.
 
+```
+idc MakeComm(addr, comment)
+----------------------------------------
+Add comment at specified address.
+Ex: idc MakeComm(0x804ddaa, 'Soy Sauce')
+
+idc SetColor(addr, what, color)
+----------------------------------------
+Set color for specified area
+Ex: idc SetColor(0x0804ddaa, 1, 0xaabbcc) // address only
+    idc SetColor(0x0804ddaa, 2, 0xaabbcc) // entire function
+    idc SetColor(0x0804ddaa, 3, 0xaabbcc) // entire segment
+```
+
 ### CGC Helper
 - Revise syscall
     - Press `Shift + R` to revise the syscall comment
