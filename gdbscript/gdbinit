@@ -1,4 +1,4 @@
-source ~/code/gggdb/gggdb.py
+source ~/tools/iddaa/gdbscript/rpc.py
 
 def get_ida_symbols
     python get_ida_symbols()

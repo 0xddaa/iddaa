@@ -7,11 +7,14 @@ idapython scripts, including feature as below:
 
 ## Install
 - On Windows:
-    1. Copy the file in **idapython** to the directory of IDA plugin
-        - Or just execute `install.bat`
+    1. Change `port` in `iddaa/idapython/rpcserver.py` to yours.
+    2. Copy the file in **idapython** to the directory of IDA plugin.
+      - You can execute **install.bat** if you installed IDA pro at `C:\Program Files (x86)\IDA 6.8\`.
+
 - On Linux:
-    1. `git clone https://github.com/0xddaa/iddaa.git ~/iddaa`
-    2. `echo "source ~/iddaa/gdbscript/gggdbinit" >> ~/.gdbinit`
+    1. `git clone https://github.com/0xddaa/iddaa.git ~/tools/iddaa`
+    2. `echo "source ~/tools/iddaa/gdbscript/gdbinit" >> ~/.gdbinit`
+    3. Change `HOST` and `PORT` in `iddaa/gdbscript/rpc.py` to yours.
 
 ## Features
 ### RPC Server
