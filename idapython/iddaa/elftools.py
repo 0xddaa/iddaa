@@ -292,6 +292,13 @@ class ELF:
             return True
         return False
 
+    def is_static(self):
+        for sh in self.shdr_l:
+            shname = self.get_shstrtab_data()[sh.shname:].split('\x00')[0]
+            if 'dyn' in shname:
+                return False
+        return True
+
     def strip_symbols(self):        
         sh2delete = 2
         size2dec  = 0
