@@ -114,15 +114,27 @@ class SymbolCollector:
         except:
             print traceback.format_exc()
 
-class PseudoCodeCollector:
+class PseudoCodeCollector(object):
     """Collect pseudo code from ida pro"""
 
-    @staticmethod
-    def get_pseudo_code(func):
-        for ea in Functions():
-            if GetFunctionName(ea) == func:
-                return str(decompile(ea))
-        return 'Function not found.'
+    def __init__(self):
+        self.pseudo_code = dict()
+        if init_hexrays_plugin():
+            install_hexrays_callback(self.__collect_pseudo_code)
+
+    def __collect_pseudo_code(self, event, *args):
+        try:
+            if event == idaapi.hxe_text_ready:
+                func = GetFunctionName(args[0].cfunc.entry_ea)
+                self.pseudo_code[func] = str(args[0].cfunc)
+        except:
+            traceback.print_exc()
+        return 0
+
+    def get_pseudo_code(self, func):
+        if func not in self.pseudo_code.keys():
+            return 'Decompile in IDA Pro first. Otherwise, IDA Pro will be stuck and crashed.'
+        return self.pseudo_code[func]
 
     @staticmethod
     def get_local_type():

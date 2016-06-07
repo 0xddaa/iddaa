@@ -23,7 +23,7 @@ class RPCServer(idaapi.plugin_t):
 
     def init(self):
         print('RPC Server ({}) plugin has been loaded.'.format(utils.dump_version(version)))
-        thread.start_new_thread(RPCServer.__init_socket_server, ())
+        thread.start_new_thread(RPCServer.__init_rpc_server, ())
         return idaapi.PLUGIN_OK
 
     def run(self, arg):
@@ -33,7 +33,7 @@ class RPCServer(idaapi.plugin_t):
         pass
 
     @staticmethod
-    def __init_socket_server():
+    def __init_rpc_server():
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error, msg:
@@ -45,6 +45,7 @@ class RPCServer(idaapi.plugin_t):
         sock.bind(('', port))
         sock.listen(5)
 
+        pseudo_code_collector = PseudoCodeCollector()
         while True:
             (csock, adr) = sock.accept()
             cmd = csock.recv(1024).strip()
@@ -56,7 +57,7 @@ class RPCServer(idaapi.plugin_t):
                     csock.send('Miss function name.')
                     continue
                 func = args[1]
-                csock.send(PseudoCodeCollector.get_pseudo_code(func))
+                csock.send(pseudo_code_collector.get_pseudo_code(func))
             elif 'GETLOCALTYPE' == args[0]:
                 csock.send(cPickle.dumps(PseudoCodeCollector.get_local_type()))
             elif 'EXECFILE' == args[0]:
