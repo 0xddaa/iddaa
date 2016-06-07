@@ -30,7 +30,7 @@ class CGCHelper(idaapi.plugin_t):
             print(self.help)
             return idaapi.PLUGIN_KEEP
         else:
-            print('Failed to register hotkey!')
+            print('Failed to register CGCHelper hotkey!')
             del hotkey_ctx
             return idaapi.PLUGIN_SKIP
 
