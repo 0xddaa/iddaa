@@ -63,14 +63,7 @@ def get_ida_symbols():
     else:
         print('Can\'t not receive ida symfile.')
 
-pseudo_code = dict()
-
 def get_pseudo_code(func):
-    global pseudo_code
-    if func in pseudo_code.keys():
-        show_result(pseudo_code[func])
-        return
-
     sock = connect_ida()
     if not sock: return
 
@@ -79,8 +72,7 @@ def get_pseudo_code(func):
     if 'Function not found' in code:
         print('[Error] ' + code)
         return
-    pseudo_code[func] = code
-    show_result(pseudo_code[func])
+    show_result(code)
 
 def get_local_type():
     sock = connect_ida()
