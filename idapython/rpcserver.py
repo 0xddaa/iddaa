@@ -6,7 +6,7 @@ import idc
 import idaapi
 import idautils
 from subprocess import Popen, PIPE
-from iddaa.gdbsync import SymbolCollector, PseudoCodeCollector
+from iddaa.gdbsync import InfoCollector
 from iddaa.utils import stdoutIO
 
 debug = False
@@ -23,7 +23,8 @@ class RPCServer(idaapi.plugin_t):
 
     def init(self):
         print('RPC Server ({}) plugin has been loaded.'.format(utils.dump_version(version)))
-        thread.start_new_thread(RPCServer.__init_rpc_server, ())
+        self.info_collector = InfoCollector()
+        thread.start_new_thread(self.__init_rpc_server, ())
         return idaapi.PLUGIN_OK
 
     def run(self, arg):
@@ -32,8 +33,7 @@ class RPCServer(idaapi.plugin_t):
     def term(self):
         pass
 
-    @staticmethod
-    def __init_rpc_server():
+    def __init_rpc_server(self):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error, msg:
@@ -45,21 +45,20 @@ class RPCServer(idaapi.plugin_t):
         sock.bind(('', port))
         sock.listen(5)
 
-        pseudo_code_collector = PseudoCodeCollector()
         while True:
             (csock, adr) = sock.accept()
             cmd = csock.recv(1024).strip()
             args = cmd.split()
             if 'GETSYM' == args[0]:
-                csock.send(SymbolCollector.get_symfile())
+                csock.send(self.info_collector.get_symfile())
             elif 'GETPSEUDOCODE' == args[0]:
                 if len(args) < 2:
                     csock.send('Miss function name.')
                     continue
                 func = args[1]
-                csock.send(pseudo_code_collector.get_pseudo_code(func))
+                csock.send(self.info_collector.get_pseudo_code(func))
             elif 'GETLOCALTYPE' == args[0]:
-                csock.send(cPickle.dumps(PseudoCodeCollector.get_local_type()))
+                csock.send(cPickle.dumps(self.info_collector.get_local_type()))
             elif 'EXECFILE' == args[0]:
                 code = csock.recv(1024)
                 tmpfile = '{}\code.py'.format(TMPDIR)

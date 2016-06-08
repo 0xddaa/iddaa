@@ -6,11 +6,29 @@ from elftools import *
 import utils
 from hashlib import md5
 
-class SymbolCollector:
-    """Collect symbols from ida pro"""
+class InfoCollector:
+    """Collect infomation from IDA Pro"""
 
-    @staticmethod
-    def get_symfile():
+    def __init__(self):
+        self.pseudo_code = dict()
+        if init_hexrays_plugin():
+            install_hexrays_callback(self.__collect_pseudo_code)
+
+    def __collect_pseudo_code(self, event, *args):
+        try:
+            if event == idaapi.hxe_text_ready:
+                func = GetFunctionName(args[0].cfunc.entry_ea)
+                self.pseudo_code[func] = str(args[0].cfunc)
+        except:
+            traceback.print_exc()
+        return 0
+
+    def get_pseudo_code(self, func):
+        if func not in self.pseudo_code.keys():
+            return 'Decompile in IDA Pro first. Otherwise, IDA Pro will be stuck and crashed.'
+        return self.pseudo_code[func]
+
+    def get_symfile(self):
         try:
             with open(get_root_filename(), 'rb') as f:
                 elf = ELF(f.read())
@@ -114,30 +132,7 @@ class SymbolCollector:
         except:
             print traceback.format_exc()
 
-class PseudoCodeCollector(object):
-    """Collect pseudo code from ida pro"""
-
-    def __init__(self):
-        self.pseudo_code = dict()
-        if init_hexrays_plugin():
-            install_hexrays_callback(self.__collect_pseudo_code)
-
-    def __collect_pseudo_code(self, event, *args):
-        try:
-            if event == idaapi.hxe_text_ready:
-                func = GetFunctionName(args[0].cfunc.entry_ea)
-                self.pseudo_code[func] = str(args[0].cfunc)
-        except:
-            traceback.print_exc()
-        return 0
-
-    def get_pseudo_code(self, func):
-        if func not in self.pseudo_code.keys():
-            return 'Decompile in IDA Pro first. Otherwise, IDA Pro will be stuck and crashed.'
-        return self.pseudo_code[func]
-
-    @staticmethod
-    def get_local_type():
+    def get_local_type(self):
         local_type = dict()
         local_type['header'] = utils.PrintLocalTypes(','.join([str(i) for i in range(1, GetMaxLocalType())]), \
             utils.PDF_INCL_DEPS | utils.PDF_DEF_FWD | utils.PDF_DEF_BASE | utils.PDF_HEADER_CMT)
