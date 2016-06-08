@@ -10,7 +10,7 @@ from iddaa.gdbsync import InfoCollector
 from iddaa.utils import stdoutIO
 
 debug = False
-version = (1, 0, 0)
+version = (0, 0, 2)
 port = 56746
 TMPDIR = 'C:\Windows\Temp'
 
