@@ -93,6 +93,17 @@ def get_local_type():
         print('Generate symbol file failed')
     os.chdir(cwd)
 
+def get_breakpoints():
+    sock = connect_ida()
+    if not sock: return
+
+    send(sock, 'GETBREAKPOINTS')
+    buf = recv(sock, True)
+    bps = pickle.loads(buf)
+    print(bps)
+    for bp in bps:
+        gdb.execute('break *{}'.format(bp))
+
 class IDAPYTHON(gdb.Command):
     """ IDA python script wrapper"""
     def __init__(self):

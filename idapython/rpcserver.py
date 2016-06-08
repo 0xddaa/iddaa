@@ -59,6 +59,8 @@ class RPCServer(idaapi.plugin_t):
                 csock.send(self.info_collector.get_pseudo_code(func))
             elif 'GETLOCALTYPE' == args[0]:
                 csock.send(cPickle.dumps(self.info_collector.get_local_type()))
+            elif 'GETBREAKPOINTS' == args[0]:
+                csock.send(cPickle.dumps(self.info_collector.get_breakpoints()))
             elif 'EXECFILE' == args[0]:
                 code = csock.recv(1024)
                 tmpfile = '{}\code.py'.format(TMPDIR)

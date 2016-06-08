@@ -148,3 +148,6 @@ class InfoCollector:
         template += 'int main() {{}}\n'
         local_type['source'] = template.format(decls=decls)
         return local_type
+
+    def get_breakpoints(self):
+        return [GetBptEA(i) for i in xrange(GetBptQty())]

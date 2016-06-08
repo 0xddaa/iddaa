@@ -11,3 +11,7 @@ end
 def get_local_type
     python get_local_type()
 end
+
+def get_breakpoints
+    python get_breakpoints()
+end
