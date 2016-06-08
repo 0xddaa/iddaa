@@ -18,12 +18,10 @@ idapython scripts, including feature as below:
 
 ## Features
 ### RPC Server
-- Symbol Collector
-    - Make **gdb** to be able to use symbols named in IDA pro
-- Pseudo Code Collector
-    - Show the pseudo code of function defined in IDA pro
-- idapython RPC
-    - Remote idapython script execute
+- Use symbols named in IDA pro
+- View the pseudo code that decompiled by IDA Pro
+- Set the breakpoints that be marked in IDA Pro
+- Remote idapython script execute
 
 ### CGC Helper
 - Revise syscall
@@ -45,11 +43,15 @@ You can use this command in **gdb**:
 - `get_pseudo_code [function]`  
     Get the pseudo code of specified function.
 - `get_local_type`  
-    Get all local types defined in IDA pro
-- `idapython [files]`  
+    Get all local types defined in IDA pro.
+- `get_breakpoints`  
+    Get breakpoints that be marked in IDA Pro and set breakpoints automatically.
+- `idapython <files>`  
     Execute file in ida pro and get result.  
-- `idc|idaapi|idautils [code]`  
+- `idc|idaapi|idautils <code>`  
     The RPC wrapper of idapython. Show the cheatsheet with `idapython cheatsheet`.
+- `idapython cheatsheet`  
+    Show some common used fucntion in idapython.
 
 ```
 idc MakeComm(addr, comment)
