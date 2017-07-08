@@ -2,10 +2,13 @@ import socket
 import thread
 import cPickle
 import sys
+from subprocess import Popen, PIPE
+
 import idc
 import idaapi
 import idautils
-from subprocess import Popen, PIPE
+
+import iddaa.utils as utils
 from iddaa.gdbsync import InfoCollector
 from iddaa.utils import stdoutIO
 

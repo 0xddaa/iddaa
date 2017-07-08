@@ -68,6 +68,9 @@ Ex: idc SetColor(0x0804ddaa, 1, 0xaabbcc) // address only
 ```
 
 ### CGC Helper
+**deprecated**
+IDACGC is better.  
+
 - Revise syscall
     - Press `Shift + R` to revise the syscall comment
     - Execute `CGCHelper.revise_syscall(True)` in console if you want to change the function name together
